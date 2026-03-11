@@ -3,16 +3,42 @@
   padding: 0;
   box-sizing: border-box;
 }
-h1 {
-  text-align: center;
+
+body {
+  display: flex;
+  justify-content: center;
+  background-color: #AFDBF5;
 }
+
 main {
+  width: 90%;
+  height: 90%;
+  padding: 20px;
+  margin: 15px;
+  border-radius: 50px;
+  background-color: #F0F8FF;
+  box-shadow: 10px 10px 5px gray;
+}
+
+.navBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2vw 4vw;
+}
+
+.clima {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-section {
-  padding: 20vw;
-  margin: 5vw;
+  padding: 4vw;
+  border-radius: 25px;
+  background-color: #7CB9E8;
+  color: rgba(255, 255, 255, 0.9);
+
+  .temperatura {
+    display: flex;
+    flex-direction: row;
+    align-content: start;
+  }
 }
