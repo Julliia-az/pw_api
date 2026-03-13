@@ -40,8 +40,7 @@ function showInfo(json) {
   showAlert("");
   document.querySelector("#weather").classList.add("show");
 
-  ((document.querySelector("#title").innerHTML = `${json.city}`),
-    `${json.country}`);
+  document.querySelector("#title").innerHTML = `${json.city}, ${json.country}`;
   document.querySelector("#tempValue").innerHTML =
     `${json.temp.toFixed(1).toString().replace(".", ",")} <sup>°C</sup>`;
   document.querySelector("#temDescription").innerHTML = `${json.description}`;
@@ -49,7 +48,7 @@ function showInfo(json) {
     .querySelector("#tempImg")
     .setAttribute(
       "src",
-      `https://openweathermap.org/img/wn//${json.tempIcon}@2x.png`,
+      `https://openweathermap.org/img/wn/${json.tempIcon}@2x.png`,
     );
   document.querySelector("#tempMax").innerHTML =
     `${json.tempMax.toFixed(1).toString().replace(".", ",")} <sup>°C</sup>`;
