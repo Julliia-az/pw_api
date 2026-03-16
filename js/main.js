@@ -10,11 +10,14 @@ document.querySelector("#search").addEventListener("submit", async (event) => {
     showAlert("Você precisa digitar uma cidade...");
     return;
   }
+  showAlert(`
+  <i class="fa-solid fa-spinner fa-spin"></i>
+  Buscando...
+`);
 
   try {
     const data = await getWeatherData(cityName);
 
-    // VERIFICA SE A API RETORNOU ERRO
     if (data.weather.cod !== 200) {
       document.querySelector("#dados").classList.remove("show");
 

@@ -12,19 +12,23 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-image: radial-gradient(
-    circle 248px at center,
-    #16d9e3 0%,
-    #30c7ec 47%,
-    #46aef7 100%
+  background: #f5fffa;
+  background: radial-gradient(
+    circle,
+    rgba(245, 255, 250, 0.85) 0%,
+    rgba(95, 158, 160, 0.6) 100%
   );
 }
 
 #container {
-  background-color: #f0f8ff;
-  border-radius: 20px;
+  background: rgba(245, 255, 250, 0.45);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.6px);
+  -webkit-backdrop-filter: blur(7.6px);
+  border: 1px solid rgba(245, 255, 250, 0.3);
+  color: rgba(0, 0, 0, 0.9);
   padding: 18px;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0.1);
 }
 
 #search {
@@ -36,10 +40,12 @@ body {
   padding: 4px 12px;
 
   input {
-    border: none;
-    background-color: transparent;
+    border-radius: 10px;
+    border-color: rgba(240, 221, 238, 0.5);
+    padding-left: 5px;
     font-size: 10px;
     width: 100%;
+    background-color: transparent;
   }
 
   input:focus-visible {
@@ -69,7 +75,6 @@ body {
     align-items: center;
     justify-content: space-around;
     gap: 20px;
-    background: linear-gradient(90deg, #5a7cdc, #606dde);
     color: #fff;
     border-radius: 20px;
     padding: 20px;
@@ -106,10 +111,13 @@ body {
       align-items: center;
       justify-content: start;
       padding: 4px 10px;
-      border-radius: 8px;
-      box-shadow: 0px 0px 5px rgba(0, 0, 0.2);
-      background-color: #fff;
       gap: 10px;
+      background: rgba(245, 255, 250, 0.45);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(7.6px);
+      -webkit-backdrop-filter: blur(7.6px);
+      border: 1px solid rgba(245, 255, 250, 0.3);
 
       i {
         text-align: center;
@@ -141,26 +149,29 @@ body {
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: start;
+      justify-content: center;
       padding: 4px 10px;
-      border-radius: 8px;
-      box-shadow: 0px 0px 5px rgba(0, 0, 0.2);
-      background-color: #fff;
+      background: rgba(245, 255, 250, 0.45);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(7.6px);
+      -webkit-backdrop-filter: blur(7.6px);
+      border: 1px solid rgba(245, 255, 250, 0.3);
+
       gap: 10px;
 
       h2,
       p {
         display: inline;
+        font-size: 14px;
       }
 
       i {
         text-align: center;
         font-size: 20px;
         width: 20%;
-      }
-
-      #aqiIcon {
-        color: chartreuse;
+        color: green;
+        width: auto;
       }
     }
   }
@@ -179,11 +190,19 @@ body {
         flex-direction: column;
         align-items: center;
         padding: 4px 10px;
-        border-radius: 50px;
-        box-shadow: 0px 0px 5px rgba(0, 0, 0.2);
-        background-color: #fff;
         gap: 5px;
-        background: linear-gradient(90deg, #5a7cdc, #606dde);
+
+        background: #000000;
+        background: radial-gradient(
+          circle,
+          rgba(0, 0, 0, 0.13) 0%,
+          rgba(245, 255, 250, 0.6) 100%
+        );
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(7.6px);
+        -webkit-backdrop-filter: blur(7.6px);
+        border: 1px solid rgba(245, 255, 250, 0.3);
 
         .dateInfo {
           display: flex;
@@ -218,12 +237,7 @@ body {
       }
 
       .infoP:hover {
-        background-image: radial-gradient(
-          circle 248px at center,
-          #16d9e3 0%,
-          #30c7ec 47%,
-          #46aef7 100%
-        );
+        box-shadow: 0px 0px 5px rgba(0, 0, 0.2);
       }
     }
   }
@@ -234,6 +248,7 @@ body {
 }
 
 #alert {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -6,7 +6,6 @@ export function updateUI(data) {
   if (weather.cod === 200) {
     const today = new Date().getDate();
 
-    // pegar previsões das 12h a partir de amanhã
     const days = forecast.list
       .filter((f) => {
         const date = new Date(f.dt_txt);
@@ -38,7 +37,6 @@ export function updateUI(data) {
         `${Math.round(day.pop * 100)}%`;
     });
 
-    // qualidade do ar
     function getAirQualityText(aqi) {
       const levels = {
         1: "Muito bom",
@@ -51,9 +49,8 @@ export function updateUI(data) {
       return levels[aqi] || "Desconhecido";
     }
 
-    // mudar fundo dependendo do clima
     changeBackground(weather.weather[0].main);
-
+    changeTempBackground(weather.weather[0].main);
     const now = new Date();
 
     showInfo({
@@ -75,13 +72,12 @@ export function updateUI(data) {
       weekday: now.toLocaleDateString("pt-BR", { weekday: "long" }),
       formattedDate: now.toLocaleDateString("pt-BR"),
 
-      rainProbability: Math.round(days[0].pop * 1000),
+      rainProbability: Math.round(days[0].pop * 100),
       forecastIcon: days[0].weather[0].icon,
     });
   }
 }
 
-// mudar fundo conforme clima
 function changeBackground(condition) {
   const container = document.querySelector(".corClima");
 
@@ -96,6 +92,22 @@ function changeBackground(condition) {
 
   container.style.background =
     backgrounds[condition] || "linear-gradient(#6a89cc,#4a69bd)";
+}
+
+function changeTempBackground(condition) {
+  const temp = document.querySelector("#temp");
+
+  const colors = {
+    Clear: "#f39c12",
+    Clouds: "#95a5a6",
+    Rain: "#2c3e50",
+    Thunderstorm: "#2d3436",
+    Snow: "#dfe6e9",
+    Drizzle: "#74b9ff",
+  };
+
+  temp.style.background =
+    colors[condition] || "linear-gradient(#6a89cc,#4a69bd)";
 }
 
 function showInfo(data) {
