@@ -12,37 +12,38 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #f5fffa;
+  background: #004e8f;
   background: radial-gradient(
     circle,
-    rgba(245, 255, 250, 0.85) 0%,
-    rgba(95, 158, 160, 0.6) 100%
+    rgba(0, 78, 143, 0.9) 0%,
+    rgba(114, 198, 239, 0.9) 100%
   );
 }
 
 #container {
-  background: rgba(245, 255, 250, 0.45);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(7.6px);
-  -webkit-backdrop-filter: blur(7.6px);
-  border: 1px solid rgba(245, 255, 250, 0.3);
   color: rgba(0, 0, 0, 0.9);
   padding: 18px;
+  background: rgba(245, 255, 250, 0.75);
+  border-radius: 10px 40px 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.9px);
+  -webkit-backdrop-filter: blur(7.9px);
+  border: 1px solid rgba(245, 255, 250, 1);
 }
 
 #search {
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #bdbdbd;
+  border: 1px solid rgba(245, 255, 250, 1);
   border-radius: 10px;
   padding: 4px 12px;
 
   input {
     border-radius: 10px;
-    border-color: rgba(240, 221, 238, 0.5);
-    padding-left: 5px;
+    border: 1px solid rgba(0, 78, 143, 0.9);
+    padding: 5px 10px;
+    margin: 5px;
     font-size: 10px;
     width: 100%;
     background-color: transparent;
