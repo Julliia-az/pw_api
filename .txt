@@ -1,0 +1,336 @@
+api.js```const apiKey = "51bgfrdsdcvbnjki876tredfgh7a";
+
+export async function getWeather(city) {
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURI(cityName)}&appid=${apiKey}&units=metric&lang=pt_br`;
+  const response = await fetch(apiUrl);
+  return await response.json();
+}
+
+export async function getAirPollution(lat, lon) {
+  const apiUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  const response = await fetch(apiUrl);
+  return await response.json();
+}
+
+export async function getForecast(lat, lon) {
+  const apiUrl = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  const response = await fetch(apiUrl);
+  return await response.json();
+}
+```
+
+weather.js```import { getWeather, getAirPollution, getForecast } from "./api.js";
+
+export async function getWeatherData(city) {
+  const weather = await getWeather(city);
+
+  const lat = weather.coord.lat;
+  const lon = weather.coord.lon;
+
+  const [airPollution, forecast] = await Promise.all([
+    getAirPollution(lat, lon),
+    getForecast(lat, lon),
+  ]);
+
+  return { weather, airPollution, forecast };
+}
+```
+
+ui.js```export function updateUI(data) {
+  if (data.data.cod === 200) {
+    const data = data.data;
+    const pollution = data.pollution;
+    const forecast = data.forecast;
+
+    const item = forecast.list.find((f) => f.dt_txt.includes("12:00:00"));
+
+    const date = new Date(item.dt_txt);
+
+    showInfo({
+      city: data.name,
+      country: data.sys.country,
+      temp: data.main.temp,
+      tempMax: data.main.temp_max,
+      tempMin: data.main.temp_min,
+      description: data.data[0].description,
+      tempIcon: data.data[0].icon,
+      windSpeed: data.wind.speed,
+      humidity: data.main.humidity,
+
+      airPollution: pollution.list[0].main.aqi,
+
+      weekday: date.toLocaleDateString("pt-BR", { weekday: "long" }),
+      formattedDate: date.toLocaleDateString("pt-BR"),
+
+      rainProbability: Math.round(item.pop * 100),
+      forecastIcon: item.data[0].icon,
+    });
+  } else {
+    document.querySelector("#data").classList.remove("show");
+
+    showAlert(`
+      Não foi possível localizar...
+      <img src="img/undraw_page-eaten_b2rt.svg" alt="">
+    `);
+  }
+}
+// function showInfo(data) {
+//   showAlert("");
+//   document.querySelector("#weather").classList.add("show");
+
+//   document.querySelector("#title").innerHTML = `${data.city}, ${data.country}`;
+//   document.querySelector("#tempValue").innerHTML =
+//     `${data.temp.toFixed(1).toString().replace(".", ",")} <sup>°C</sup>`;
+//   document.querySelector("#temDescription").innerHTML = `${data.description}`;
+//   document
+//     .querySelector("#tempImg")
+//     .setAttribute(
+//       "src",
+//       `https://opendatamap.org/img/wn/${data.tempIcon}@2x.png`,
+//     );
+//   document.querySelector("#tempMax").innerHTML =
+//     `${data.tempMax.toFixed(1).toString().replace(".", ",")} <sup>°C</sup>`;
+//   document.querySelector("#tempMin").innerHTML =
+//     `${data.tempMin.toFixed(1).toString().replace(".", ",")} <sup>°C</sup>`;
+//   document.querySelector("#humidity").innerHTML = `${data.humidity}%`;
+//   document.querySelector("#wind").innerHTML =
+//     `${data.windSpeed.toFixed(1)} Km/h`;
+
+//   document.querySelector("#aqi").innerHTML = `${data.airPollution}`;
+
+//   document.querySelector(".weekday").innerHTML = `${data.weekday}`;
+//   document.querySelector(".date").innerHTML = `${data.formattedDate}`;
+//   document.querySelector(".forecastIcon").innerHTML = `${data.forecastIcon}`;
+// }
+function showInfo(data) {
+  showAlert("");
+  document.querySelector("#weather").classList.add("show");
+
+  document.querySelector("#title").innerHTML = `${data.city}, ${data.country}`;
+
+  document.querySelector("#tempValue").innerHTML =
+    `${data.temp.toFixed(1).toString().replace(".", ",")} <sup>°C</sup>`;
+
+  document.querySelector("#temDescription").innerHTML = `${data.description}`;
+
+  document
+    .querySelector("#tempImg")
+    .setAttribute(
+      "src",
+      `https://openweathermap.org/img/wn/${data.tempIcon}@2x.png`,
+    );
+
+  document.querySelector("#tempMax").innerHTML =
+    `${data.tempMax.toFixed(1).toString().replace(".", ",")} <sup>°C</sup>`;
+
+  document.querySelector("#tempMin").innerHTML =
+    `${data.tempMin.toFixed(1).toString().replace(".", ",")} <sup>°C</sup>`;
+
+  document.querySelector("#humidity").innerHTML = `${data.humidity}%`;
+
+  document.querySelector("#wind").innerHTML =
+    `${data.windSpeed.toFixed(1)} Km/h`;
+
+  document.querySelector("#aqi").innerHTML = `${data.airPollution}`;
+
+  document.querySelector(".weekday").innerHTML = `${data.weekday}`;
+
+  document.querySelector(".date").innerHTML = `${data.formattedDate}`;
+
+  document
+    .querySelector(".forecastIcon")
+    .setAttribute(
+      "src",
+      `https://openweathermap.org/img/wn/${data.forecastIcon}@2x.png`,
+    );
+
+  document.querySelector(".rainPorcent").innerHTML = `${data.rainProbability}`;
+}
+function showAlert(msg) {
+  document.querySelector("#alert").innerHTML = msg;
+}
+```
+
+main.js```import { getWeatherData } from "./weather.js";
+import { updateUI } from "./ui.js";
+document.querySelector("#search").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const cityName = document.querySelector("#cityName").value.trim();
+
+  if (!cityName) return;
+
+  try {
+    const data = await getWeatherData(cityName);
+    updateUI(data);
+  } catch (error) {
+    console.error(error);
+  }
+});
+console.log("oi");
+```
+
+index.html```<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Clima</title>
+  </head>
+
+  <body>
+    <div id="cidade">
+      <div id="container">
+        <form id="search">
+          <i class="fa-solid fa-location-dot"></i>
+          <input
+            type="search"
+            name="cityName"
+            id="cityName"
+            placeholder="Buscar cidade"
+          /><button type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+        <div id="dados">
+          <div id="weather">
+            <h1 id="title">XXXXXX</h1>
+            <div id="infos">
+              <div id="temp">
+                <img id="tempImg" src="" alt="" />
+                <div>
+                  <p id="tempValue">XX</p>
+                  <p id="temDescription">Nublado</p>
+                </div>
+              </div>
+              <div id="otherInfos">
+                <div class="info">
+                  <i id="tempMaxIcon" class="fa-solid fa-temperature-high"></i>
+                  <div>
+                    <h2>Temp. max</h2>
+                    <p id="tempMax">XX</p>
+                  </div>
+                </div>
+                <div class="info">
+                  <i id="tempMinIcon" class="fa-solid fa-temperature-low"></i>
+                  <div>
+                    <h2>Temp. min</h2>
+                    <p id="tempMin">XX</p>
+                  </div>
+                </div>
+                <div class="info">
+                  <i id="humidityIcon" class="fa-solid fa-droplet"></i>
+                  <div>
+                    <h2>Humidade</h2>
+                    <p id="humidity">XX</p>
+                  </div>
+                </div>
+                <div class="info">
+                  <i id="windIcon" class="fa-solid fa-wind"></i>
+                  <div>
+                    <h2>Vento</h2>
+                    <p id="wind">XX</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="airPollution">
+            <div id="quality">
+              <div id="infoQ">
+                <i id="aqiIcon" class="fa-solid fa-ranking-star"></i>
+                <div>
+                  <h2>Qualidade do ar:</h2>
+                  <p id="aqi">XX</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="forecast">
+            <div id="predictions">
+              <div class="infoP">
+                <div class="dateInfo">
+                  <h2 class="weekday">Seg</h2>
+                  <p class="date">16/03</p>
+                </div>
+                <img class="forecastIcon" src="" alt="" />
+                <h3 id="climaP">23</h3>
+                <div class="rain">
+                  <i class="fa-solid fa-cloud-showers-heavy"></i>
+                  <p class="rainPorcent">40</p>
+                </div>
+              </div>
+              <div class="infoP">
+                <div class="dateInfo">
+                  <h2 class="weekday">Ter</h2>
+                  <p class="date">16/03</p>
+                </div>
+                <img class="forecastIcon" src="" alt="" />
+                <h3 id="climaP">23</h3>
+                <div class="rain">
+                  <i class="fa-solid fa-cloud-showers-heavy"></i>
+                  <p class="rainPorcent">40</p>
+                </div>
+              </div>
+              <div class="infoP">
+                <div class="dateInfo">
+                  <h2 class="weekday">Qua</h2>
+                  <p class="date">16/03</p>
+                </div>
+                <img class="forecastIcon" src="" alt="" />
+                <h3 id="climaP">23</h3>
+                <div class="rain">
+                  <i class="fa-solid fa-cloud-showers-heavy"></i>
+                  <p class="rainPorcent">40</p>
+                </div>
+              </div>
+              <div class="infoP">
+                <div class="dateInfo">
+                  <h2 class="weekday">Qui</h2>
+                  <p class="date">16/03</p>
+                </div>
+                <img class="forecastIcon" src="" alt="" />
+                <h3 id="climaP">23</h3>
+                <div class="rain">
+                  <i class="fa-solid fa-cloud-showers-heavy"></i>
+                  <p class="rainPorcent">40</p>
+                </div>
+              </div>
+              <div class="infoP">
+                <div class="dateInfo">
+                  <h2 class="weekday">Sex</h2>
+                  <p class="date">16/03</p>
+                </div>
+                <img class="forecastIcon" src="" alt="" />
+                <h3 id="climaP">23</h3>
+                <div class="rain">
+                  <i class="fa-solid fa-cloud-showers-heavy"></i>
+                  <p class="rainPorcent">40</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="alert"></div>
+      </div>
+    </div>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
+```
+
+estrutura de pastas
+js/
+    api.js"
+    main.js"
+    script.js"
+    teste.js"
+    ui.js"
+    weather.js"

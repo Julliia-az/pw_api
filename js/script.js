@@ -38,7 +38,7 @@ document.querySelector("#search").addEventListener("submit", async (event) => {
 
 function showInfo(json) {
   showAlert("");
-  document.querySelector("#weather").classList.add("show");
+  document.querySelector("#dados").classList.add("show");
 
   document.querySelector("#title").innerHTML = `${json.city}, ${json.country}`;
   document.querySelector("#tempValue").innerHTML =
