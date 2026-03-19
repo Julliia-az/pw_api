@@ -3,8 +3,8 @@
 Aplicação web que exibe informações climáticas em tempo real a partir de uma API externa.
 
 ## 🚀 Demo
-🔗 Acesse o projeto: https://seu-link-github-pages.com  
-🔗 Código: https://github.com/seu-usuario/seu-repositorio
+🔗 Acesse o projeto: https://julliia-az.github.io/pw_api/
+🔗 Código: https://github.com/Julliia-az/pw_api
 
 ---
 
