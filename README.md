@@ -57,3 +57,5 @@ Durante o desenvolvimento, foi possível entender melhor:
 ## 📸 Preview
 
 <img width="754" height="479" alt="image" src="https://github.com/user-attachments/assets/39f7e284-1764-4073-9d5b-1f52d63ec4f0" />
+<img width="756" height="477" alt="image" src="https://github.com/user-attachments/assets/f9e8dda8-06a9-4932-a953-90e6d3b625f2" />
+
